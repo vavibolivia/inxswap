@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en""
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +45,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
-        /* Header */
         .doc-header {
             background: var(--accent-blue);
             color: white;
@@ -114,7 +113,6 @@
             font-weight: 600;
         }
         
-        /* Document Info Bar */
         .doc-info-bar {
             background: var(--bg-accent);
             border-bottom: 1px solid var(--border);
@@ -134,7 +132,6 @@
             text-decoration: underline;
         }
         
-        /* Content */
         .doc-content {
             padding: 30px;
         }
@@ -158,7 +155,6 @@
             margin-right: 8px;
         }
         
-        /* Form Table */
         .form-table {
             width: 100%;
             border-collapse: collapse;
@@ -256,7 +252,6 @@
             font-style: italic;
         }
         
-        /* Price inputs */
         .price-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -314,7 +309,6 @@
             text-decoration: none;
         }
         
-        /* Results */
         .results-box {
             border: 2px solid var(--accent-blue);
             border-radius: 4px;
@@ -460,7 +454,6 @@
             border: 1px solid #856404;
         }
         
-        /* Disclaimer */
         .disclaimer {
             background: var(--bg-accent);
             border: 1px solid var(--border);
@@ -484,7 +477,6 @@
             line-height: 1.7;
         }
         
-        /* Footer */
         .doc-footer {
             background: var(--bg-accent);
             border-top: 1px solid var(--border);
@@ -509,7 +501,6 @@
             font-size: 0.7rem;
         }
         
-        /* Responsive */
         @media (max-width: 600px) {
             body { padding: 10px; }
             .doc-header { flex-direction: column; gap: 12px; text-align: center; }
@@ -525,7 +516,6 @@
 </head>
 <body>
     <div class="document">
-        <!-- Header -->
         <header class="doc-header">
             <div class="doc-header-left">
                 <div class="sec-badge">SEC<br>REG</div>
@@ -540,7 +530,6 @@
             </div>
         </header>
         
-        <!-- Info Bar -->
         <div class="doc-info-bar">
             <span data-i18n="docRef">Document Reference: INX-SWAP-2025</span>
             <span>
@@ -549,14 +538,13 @@
             </span>
         </div>
         
-        <!-- Content -->
         <div class="doc-content">
-            <!-- Section 1: Proposed Ratio -->
+            <!-- Section 1 -->
             <div class="section">
-                <h2 class="section-title"><span class="section-number">§1</span> <span data-i18n="sec1Title">제안 스왑 비율</span></h2>
+                <h2 class="section-title"><span class="section-number">§1</span> <span data-i18n="sec1Title">Proposed Swap Ratio</span></h2>
                 <table class="form-table">
                     <tr>
-                        <th data-i18n="proposedRatioLabel">제안 스왑 비율</th>
+                        <th data-i18n="proposedRatioLabel">Proposed Swap Ratio</th>
                         <td>
                             <div class="input-with-unit">
                                 <span class="input-unit">1 INX =</span>
@@ -575,12 +563,12 @@
                 </table>
             </div>
             
-            <!-- Section 2: INX Parameters -->
+            <!-- Section 2 -->
             <div class="section">
-                <h2 class="section-title"><span class="section-number">§2</span> <span data-i18n="sec2Title">INX Limited 재무 파라미터</span></h2>
+                <h2 class="section-title"><span class="section-number">§2</span> <span data-i18n="sec2Title">INX Limited Financial Parameters</span></h2>
                 <table class="form-table">
                     <tr>
-                        <th data-i18n="cashFlowLabel">예상 연간 현금흐름</th>
+                        <th data-i18n="cashFlowLabel">Est. Annual Cash Flow</th>
                         <td>
                             <div class="input-with-unit">
                                 <span class="input-unit">$</span>
@@ -603,25 +591,25 @@
                         </td>
                     </tr>
                     <tr>
-                        <th data-i18n="supplyLabel">유통 토큰 수량</th>
+                        <th data-i18n="supplyLabel">Circulating Supply</th>
                         <td>
                             <span class="fixed-value">110,000,000 INX</span>
-                            <div class="field-note" data-i18n="supplyNote">현재 유통량 약 1.1억개 (총 발행량 200M 중)</div>
+                            <div class="field-note" data-i18n="supplyNote">Current circulation ~110M (out of 200M total)</div>
                         </td>
                     </tr>
                     <tr>
-                        <th data-i18n="distributionLabel">이익 분배율</th>
+                        <th data-i18n="distributionLabel">Profit Distribution Rate</th>
                         <td>
                             <span class="fixed-value">40%</span>
-                            <div class="field-note" data-i18n="distributionNote">SEC F-1 Prospectus 명시 조건</div>
+                            <div class="field-note" data-i18n="distributionNote">As specified in SEC F-1 Prospectus</div>
                         </td>
                     </tr>
                 </table>
             </div>
             
-            <!-- Section 3: Market Prices -->
+            <!-- Section 3 -->
             <div class="section">
-                <h2 class="section-title"><span class="section-number">§3</span> <span data-i18n="sec3Title">현재 시장 가격</span></h2>
+                <h2 class="section-title"><span class="section-number">§3</span> <span data-i18n="sec3Title">Current Market Prices</span></h2>
                 <div class="price-grid">
                     <div class="price-box">
                         <div class="price-label">INX Token</div>
@@ -642,24 +630,24 @@
                 </div>
             </div>
             
-            <!-- Section 4: Analysis Results -->
+            <!-- Section 4 -->
             <div class="section">
-                <h2 class="section-title"><span class="section-number">§4</span> <span data-i18n="sec4Title">분석 결과</span></h2>
+                <h2 class="section-title"><span class="section-number">§4</span> <span data-i18n="sec4Title">Analysis Results</span></h2>
                 <div class="results-box">
                     <div class="results-header">
                         <h3 data-i18n="resultsTitle">Fair Swap Ratio Calculation</h3>
                         <button class="formula-btn" id="formulaBtn" onclick="toggleFormula()">
-                            <span data-i18n="formulaBtn">계산식 보기</span>
+                            <span data-i18n="formulaBtn">View Formula</span>
                         </button>
                     </div>
                     
                     <div class="formula-dropdown" id="formulaDropdown">
                         <div id="formulaContent" data-i18n="formulaContent">
-                            <strong>계산 공식:</strong><br>
-                            <code>연간 분배금 = 현금흐름 × 40% ÷ 1.1억</code><br>
-                            <code>5년 분배금 = 연간 분배금 × 5</code><br>
-                            <code>적정 비율 = (INX 현재가 + 5년 분배금) ÷ NOTE 현재가</code><br><br>
-                            <strong>현재 계산값:</strong><br>
+                            <strong>Formula:</strong><br>
+                            <code>Annual Div = Cash Flow × 40% ÷ 110M</code><br>
+                            <code>5yr Div = Annual Div × 5</code><br>
+                            <code>Fair Ratio = (INX Price + 5yr Div) ÷ NOTE Price</code><br><br>
+                            <strong>Current Calculation:</strong><br>
                         </div>
                         <div id="calcDetail"></div>
                     </div>
@@ -667,20 +655,20 @@
                     <div class="results-body">
                         <div class="ratio-comparison">
                             <div class="ratio-card">
-                                <div class="ratio-card-label" data-i18n="proposedLabel">제안 비율</div>
+                                <div class="ratio-card-label" data-i18n="proposedLabel">Proposed</div>
                                 <div class="ratio-card-value" id="proposedRatioResult">1 : 4.00</div>
-                                <div class="ratio-card-sub" data-i18n="proposedSub">입력값</div>
+                                <div class="ratio-card-sub" data-i18n="proposedSub">Your Input</div>
                             </div>
                             <div class="ratio-vs">vs</div>
                             <div class="ratio-card highlight">
-                                <div class="ratio-card-label" data-i18n="fairLabel">적정 비율</div>
+                                <div class="ratio-card-label" data-i18n="fairLabel">Fair Value</div>
                                 <div class="ratio-card-value" id="fairRatioResult">1 : 4.00</div>
-                                <div class="ratio-card-sub" data-i18n="fairSub">토큰가치 + 분배금</div>
+                                <div class="ratio-card-sub" data-i18n="fairSub">Token + Dividend</div>
                             </div>
                         </div>
                         
                         <div class="verdict-box neutral" id="verdictBox">
-                            <span id="verdictText" data-i18n="analyzing">분석 중...</span>
+                            <span id="verdictText">Analyzing...</span>
                         </div>
                     </div>
                 </div>
@@ -690,16 +678,15 @@
             <div class="disclaimer">
                 <div class="disclaimer-title" data-i18n="disclaimerTitle">⚠ Important Disclaimer</div>
                 <div class="disclaimer-text" data-i18n="disclaimerText">
-                    • 본 분석은 INX Limited가 예상 현금흐름을 달성한다는 가정 하에 수행되었습니다.<br>
-                    • 40% 이익 분배는 회사의 재량에 따르며, 보장되지 않습니다.<br>
-                    • 토큰 가격은 시장 상황에 따라 변동됩니다.<br>
-                    • 본 자료는 정보 제공 목적이며, 투자 권유가 아닙니다.<br>
-                    • 투자 결정 전 SEC EDGAR 공시 자료를 직접 확인하시기 바랍니다.
+                    • This analysis assumes INX Limited achieves the estimated cash flow.<br>
+                    • 40% profit distribution is at company discretion and not guaranteed.<br>
+                    • Token prices fluctuate with market conditions.<br>
+                    • This document is for informational purposes only, not investment advice.<br>
+                    • Please review SEC EDGAR filings before making investment decisions.
                 </div>
             </div>
         </div>
         
-        <!-- Footer -->
         <footer class="doc-footer">
             <div>
                 INX Token: SEC Registered Security Token (Securities Act of 1933)
@@ -735,7 +722,6 @@
                 proposedSub: '입력값',
                 fairLabel: '적정 비율',
                 fairSub: '토큰가치 + 분배금',
-                analyzing: '분석 중...',
                 disclaimerTitle: '⚠ 중요 고지사항',
                 disclaimerText: '• 본 분석은 INX Limited가 예상 현금흐름을 달성한다는 가정 하에 수행되었습니다.<br>• 40% 이익 분배는 회사의 재량에 따르며, 보장되지 않습니다.<br>• 토큰 가격은 시장 상황에 따라 변동됩니다.<br>• 본 자료는 정보 제공 목적이며, 투자 권유가 아닙니다.<br>• 투자 결정 전 SEC EDGAR 공시 자료를 직접 확인하시기 바랍니다.',
                 verdictLoss: '제안 비율로 스왑 시 약 {0}% 불리',
@@ -762,7 +748,6 @@
                 proposedSub: 'Your Input',
                 fairLabel: 'Fair Value',
                 fairSub: 'Token + Dividend',
-                analyzing: 'Analyzing...',
                 disclaimerTitle: '⚠ Important Disclaimer',
                 disclaimerText: '• This analysis assumes INX Limited achieves the estimated cash flow.<br>• 40% profit distribution is at company discretion and not guaranteed.<br>• Token prices fluctuate with market conditions.<br>• This document is for informational purposes only, not investment advice.<br>• Please review SEC EDGAR filings before making investment decisions.',
                 verdictLoss: 'Swapping at proposed ratio: ~{0}% unfavorable',
@@ -781,7 +766,7 @@
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key] && el.id !== 'calcDetail') {
+                if (i18n[lang][key]) {
                     el.innerHTML = i18n[lang][key];
                 }
             });
@@ -869,7 +854,8 @@
         document.getElementById('inxPrice').addEventListener('input', calculate);
         document.getElementById('notePrice').addEventListener('input', calculate);
         
-        calculate();
+        // Initialize with English
+        setLang('en');
     </script>
 </body>
 </html>
