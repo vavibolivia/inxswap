@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INX Token Fair Swap Ratio Analysis</title>
+    <meta name="description" content="INX Token to NOTE Swap Ratio Analysis - SEC Registered Security Token">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-accent: #f0f4f8;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a5a;
+            --text-muted: #6c757d;
+            --border: #dee2e6;
+            --border-dark: #adb5bd;
+            --accent-blue: #0a3161;
+            --accent-red: #bf0a30;
+            --accent-gold: #c5a03d;
+            --profit: #155724;
+            --loss: #721c24;
+            --profit-bg: #d4edda;
+            --loss-bg: #f8d7da;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .document {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        /* Header */
+        .doc-header {
+            background: var(--accent-blue);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .doc-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .sec-badge {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-align: center;
+            line-height: 1.1;
+        }
+        
+        .doc-title-group h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        
+        .doc-title-group p {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .lang-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 4px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .lang-btn.active {
+            background: white;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        
+        /* Document Info Bar */
+        .doc-info-bar {
+            background: var(--bg-accent);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .doc-info-bar a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        
+        .doc-info-bar a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Content */
+        .doc-content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 28px;
+        }
+        
+        .section-title {
+            font-family: 'Merriweather', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .section-number {
+            color: var(--text-muted);
+            margin-right: 8px;
+        }
+        
+        /* Form Table */
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+        
+        .form-table th,
+        .form-table td {
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            text-align: left;
+        }
+        
+        .form-table th {
+            background: var(--bg-accent);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            width: 40%;
+        }
+        
+        .form-table td {
+            background: var(--bg-primary);
+        }
+        
+        .form-input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(10, 49, 97, 0.1);
+        }
+        
+        .input-with-unit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .input-unit {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        
+        .quick-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        
+        .quick-btn {
+            padding: 6px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .quick-btn:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+        
+        .quick-btn.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+        }
+        
+        .fixed-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+        
+        .field-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+        }
+        
+        /* Price inputs */
+        .price-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .price-box {
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            background: var(--bg-secondary);
+        }
+        
+        .price-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        
+        .price-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .price-input-wrap .currency {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .price-input {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            text-align: right;
+            background: white;
+        }
+        
+        .price-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+        
+        .price-source {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        
+        .price-source a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        
+        /* Results */
+        .results-box {
+            border: 2px solid var(--accent-blue);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .results-header {
+            background: var(--accent-blue);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .results-header h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .formula-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 4px;
+            padding: 4px 10px;
+            color: white;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .formula-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .formula-btn.active {
+            background: white;
+            color: var(--accent-blue);
+        }
+        
+        .formula-dropdown {
+            display: none;
+            background: var(--bg-accent);
+            border-bottom: 1px solid var(--border);
+            padding: 16px;
+            font-size: 0.8rem;
+            line-height: 1.8;
+        }
+        
+        .formula-dropdown.show {
+            display: block;
+        }
+        
+        .formula-dropdown code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            border: 1px solid var(--border);
+        }
+        
+        .results-body {
+            padding: 20px;
+        }
+        
+        .ratio-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .ratio-card {
+            text-align: center;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--bg-secondary);
+        }
+        
+        .ratio-card.highlight {
+            border-color: var(--accent-blue);
+            background: rgba(10, 49, 97, 0.05);
+        }
+        
+        .ratio-card-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .ratio-card-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .ratio-card.highlight .ratio-card-value {
+            color: var(--accent-blue);
+        }
+        
+        .ratio-card-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        .ratio-vs {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        
+        .verdict-box {
+            padding: 14px 16px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .verdict-box.loss {
+            background: var(--loss-bg);
+            color: var(--loss);
+            border: 1px solid var(--loss);
+        }
+        
+        .verdict-box.profit {
+            background: var(--profit-bg);
+            color: var(--profit);
+            border: 1px solid var(--profit);
+        }
+        
+        .verdict-box.neutral {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #856404;
+        }
+        
+        /* Disclaimer */
+        .disclaimer {
+            background: var(--bg-accent);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-red);
+            padding: 16px 20px;
+            margin-top: 24px;
+        }
+        
+        .disclaimer-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--accent-red);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .disclaimer-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* Footer */
+        .doc-footer {
+            background: var(--bg-accent);
+            border-top: 1px solid var(--border);
+            padding: 16px 30px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .doc-footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            margin: 0 8px;
+        }
+        
+        .doc-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .doc-footer-legal {
+            margin-top: 8px;
+            font-size: 0.7rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .doc-header { flex-direction: column; gap: 12px; text-align: center; }
+            .doc-header-left { flex-direction: column; }
+            .doc-info-bar { flex-direction: column; gap: 4px; text-align: center; }
+            .doc-content { padding: 20px; }
+            .price-grid { grid-template-columns: 1fr; }
+            .ratio-comparison { grid-template-columns: 1fr; }
+            .ratio-vs { transform: rotate(90deg); }
+            .form-table th { width: 35%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <!-- Header -->
+        <header class="doc-header">
+            <div class="doc-header-left">
+                <div class="sec-badge">SEC<br>REG</div>
+                <div class="doc-title-group">
+                    <h1>INX Token Fair Swap Ratio Analysis</h1>
+                    <p data-i18n="headerSub">SEC Registered Security Token | F-1 Prospectus Filed</p>
+                </div>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active" id="langKo" onclick="setLang('ko')">한국어</button>
+                <button class="lang-btn" id="langEn" onclick="setLang('en')">English</button>
+            </div>
+        </header>
+        
+        <!-- Info Bar -->
+        <div class="doc-info-bar">
+            <span data-i18n="docRef">Document Reference: INX-SWAP-2025</span>
+            <span>
+                <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001725882" target="_blank">SEC EDGAR Filing</a> |
+                <a href="https://www.inx.co" target="_blank">INX.co</a>
+            </span>
+        </div>
+        
+        <!-- Content -->
+        <div class="doc-content">
+            <!-- Section 1: Proposed Ratio -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-number">§1</span> <span data-i18n="sec1Title">제안 스왑 비율</span></h2>
+                <table class="form-table">
+                    <tr>
+                        <th data-i18n="proposedRatioLabel">제안 스왑 비율</th>
+                        <td>
+                            <div class="input-with-unit">
+                                <span class="input-unit">1 INX =</span>
+                                <input type="number" class="form-input" id="proposedRatio" value="4" step="0.1" min="0" style="width: 100px; text-align: center;">
+                                <span class="input-unit">NOTE</span>
+                            </div>
+                            <div class="quick-select" id="ratioBtns">
+                                <button class="quick-btn" onclick="setRatio(2)">1:2</button>
+                                <button class="quick-btn" onclick="setRatio(3)">1:3</button>
+                                <button class="quick-btn active" onclick="setRatio(4)">1:4</button>
+                                <button class="quick-btn" onclick="setRatio(5)">1:5</button>
+                                <button class="quick-btn" onclick="setRatio(6)">1:6</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Section 2: INX Parameters -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-number">§2</span> <span data-i18n="sec2Title">INX Limited 재무 파라미터</span></h2>
+                <table class="form-table">
+                    <tr>
+                        <th data-i18n="cashFlowLabel">예상 연간 현금흐름</th>
+                        <td>
+                            <div class="input-with-unit">
+                                <span class="input-unit">$</span>
+                                <input type="number" class="form-input" id="cashFlow" value="5000000" min="0">
+                                <span class="input-unit">USD</span>
+                            </div>
+                            <div class="quick-select" id="cashFlowBtns">
+                                <button class="quick-btn" onclick="setCashFlow(1000000)">$1M</button>
+                                <button class="quick-btn active" onclick="setCashFlow(5000000)">$5M</button>
+                                <button class="quick-btn" onclick="setCashFlow(10000000)">$10M</button>
+                                <button class="quick-btn" onclick="setCashFlow(25000000)">$25M</button>
+                                <button class="quick-btn" onclick="setCashFlow(50000000)">$50M</button>
+                            </div>
+                            <div class="quick-select" id="cashFlowBtns2" style="margin-top: 6px;">
+                                <button class="quick-btn" onclick="setCashFlow(100000000)">$100M</button>
+                                <button class="quick-btn" onclick="setCashFlow(200000000)">$200M</button>
+                                <button class="quick-btn" onclick="setCashFlow(500000000)">$500M</button>
+                                <button class="quick-btn" onclick="setCashFlow(1000000000)">$1B</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th data-i18n="supplyLabel">유통 토큰 수량</th>
+                        <td>
+                            <span class="fixed-value">110,000,000 INX</span>
+                            <div class="field-note" data-i18n="supplyNote">현재 유통량 약 1.1억개 (총 발행량 200M 중)</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th data-i18n="distributionLabel">이익 분배율</th>
+                        <td>
+                            <span class="fixed-value">40%</span>
+                            <div class="field-note" data-i18n="distributionNote">SEC F-1 Prospectus 명시 조건</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Section 3: Market Prices -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-number">§3</span> <span data-i18n="sec3Title">현재 시장 가격</span></h2>
+                <div class="price-grid">
+                    <div class="price-box">
+                        <div class="price-label">INX Token</div>
+                        <div class="price-input-wrap">
+                            <span class="currency">$</span>
+                            <input type="number" class="price-input" id="inxPrice" value="0.16" step="0.01" min="0">
+                        </div>
+                        <div class="price-source"><a href="https://www.coingecko.com/en/coins/inx-token" target="_blank">CoinGecko</a></div>
+                    </div>
+                    <div class="price-box">
+                        <div class="price-label">Republic NOTE</div>
+                        <div class="price-input-wrap">
+                            <span class="currency">$</span>
+                            <input type="number" class="price-input" id="notePrice" value="0.08" step="0.01" min="0">
+                        </div>
+                        <div class="price-source"><a href="https://www.coingecko.com/en/coins/republic-note" target="_blank">CoinGecko</a></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 4: Analysis Results -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-number">§4</span> <span data-i18n="sec4Title">분석 결과</span></h2>
+                <div class="results-box">
+                    <div class="results-header">
+                        <h3 data-i18n="resultsTitle">Fair Swap Ratio Calculation</h3>
+                        <button class="formula-btn" id="formulaBtn" onclick="toggleFormula()">
+                            <span data-i18n="formulaBtn">계산식 보기</span>
+                        </button>
+                    </div>
+                    
+                    <div class="formula-dropdown" id="formulaDropdown">
+                        <div id="formulaContent" data-i18n="formulaContent">
+                            <strong>계산 공식:</strong><br>
+                            <code>연간 분배금 = 현금흐름 × 40% ÷ 1.1억</code><br>
+                            <code>5년 분배금 = 연간 분배금 × 5</code><br>
+                            <code>적정 비율 = (INX 현재가 + 5년 분배금) ÷ NOTE 현재가</code><br><br>
+                            <strong>현재 계산값:</strong><br>
+                        </div>
+                        <div id="calcDetail"></div>
+                    </div>
+                    
+                    <div class="results-body">
+                        <div class="ratio-comparison">
+                            <div class="ratio-card">
+                                <div class="ratio-card-label" data-i18n="proposedLabel">제안 비율</div>
+                                <div class="ratio-card-value" id="proposedRatioResult">1 : 4.00</div>
+                                <div class="ratio-card-sub" data-i18n="proposedSub">입력값</div>
+                            </div>
+                            <div class="ratio-vs">vs</div>
+                            <div class="ratio-card highlight">
+                                <div class="ratio-card-label" data-i18n="fairLabel">적정 비율</div>
+                                <div class="ratio-card-value" id="fairRatioResult">1 : 4.00</div>
+                                <div class="ratio-card-sub" data-i18n="fairSub">토큰가치 + 분배금</div>
+                            </div>
+                        </div>
+                        
+                        <div class="verdict-box neutral" id="verdictBox">
+                            <span id="verdictText" data-i18n="analyzing">분석 중...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <div class="disclaimer-title" data-i18n="disclaimerTitle">⚠ Important Disclaimer</div>
+                <div class="disclaimer-text" data-i18n="disclaimerText">
+                    • 본 분석은 INX Limited가 예상 현금흐름을 달성한다는 가정 하에 수행되었습니다.<br>
+                    • 40% 이익 분배는 회사의 재량에 따르며, 보장되지 않습니다.<br>
+                    • 토큰 가격은 시장 상황에 따라 변동됩니다.<br>
+                    • 본 자료는 정보 제공 목적이며, 투자 권유가 아닙니다.<br>
+                    • 투자 결정 전 SEC EDGAR 공시 자료를 직접 확인하시기 바랍니다.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="doc-footer">
+            <div>
+                INX Token: SEC Registered Security Token (Securities Act of 1933)
+                <a href="https://www.inx.co" target="_blank">INX.co</a>
+                <a href="https://www.coingecko.com/en/coins/inx-token" target="_blank">INX Price</a>
+                <a href="https://www.coingecko.com/en/coins/republic-note" target="_blank">NOTE Price</a>
+            </div>
+            <div class="doc-footer-legal">
+                CIK: 0001725882 | This document is for informational purposes only.
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        const i18n = {
+            ko: {
+                headerSub: 'SEC 등록 보안 토큰 | F-1 Prospectus 제출',
+                docRef: '문서 참조: INX-SWAP-2025',
+                sec1Title: '제안 스왑 비율',
+                proposedRatioLabel: '제안 스왑 비율',
+                sec2Title: 'INX Limited 재무 파라미터',
+                cashFlowLabel: '예상 연간 현금흐름',
+                supplyLabel: '유통 토큰 수량',
+                supplyNote: '현재 유통량 약 1.1억개 (총 발행량 200M 중)',
+                distributionLabel: '이익 분배율',
+                distributionNote: 'SEC F-1 Prospectus 명시 조건',
+                sec3Title: '현재 시장 가격',
+                sec4Title: '분석 결과',
+                resultsTitle: '적정 스왑 비율 산출',
+                formulaBtn: '계산식 보기',
+                formulaContent: '<strong>계산 공식:</strong><br><code>연간 분배금 = 현금흐름 × 40% ÷ 1.1억</code><br><code>5년 분배금 = 연간 분배금 × 5</code><br><code>적정 비율 = (INX 현재가 + 5년 분배금) ÷ NOTE 현재가</code><br><br><strong>현재 계산값:</strong><br>',
+                proposedLabel: '제안 비율',
+                proposedSub: '입력값',
+                fairLabel: '적정 비율',
+                fairSub: '토큰가치 + 분배금',
+                analyzing: '분석 중...',
+                disclaimerTitle: '⚠ 중요 고지사항',
+                disclaimerText: '• 본 분석은 INX Limited가 예상 현금흐름을 달성한다는 가정 하에 수행되었습니다.<br>• 40% 이익 분배는 회사의 재량에 따르며, 보장되지 않습니다.<br>• 토큰 가격은 시장 상황에 따라 변동됩니다.<br>• 본 자료는 정보 제공 목적이며, 투자 권유가 아닙니다.<br>• 투자 결정 전 SEC EDGAR 공시 자료를 직접 확인하시기 바랍니다.',
+                verdictLoss: '제안 비율로 스왑 시 약 {0}% 불리',
+                verdictGain: '제안 비율로 스왑 시 약 {0}% 유리',
+                verdictFair: '제안 비율 ≈ 적정 비율 (차이 {0}%)'
+            },
+            en: {
+                headerSub: 'SEC Registered Security Token | F-1 Prospectus Filed',
+                docRef: 'Document Reference: INX-SWAP-2025',
+                sec1Title: 'Proposed Swap Ratio',
+                proposedRatioLabel: 'Proposed Swap Ratio',
+                sec2Title: 'INX Limited Financial Parameters',
+                cashFlowLabel: 'Est. Annual Cash Flow',
+                supplyLabel: 'Circulating Supply',
+                supplyNote: 'Current circulation ~110M (out of 200M total)',
+                distributionLabel: 'Profit Distribution Rate',
+                distributionNote: 'As specified in SEC F-1 Prospectus',
+                sec3Title: 'Current Market Prices',
+                sec4Title: 'Analysis Results',
+                resultsTitle: 'Fair Swap Ratio Calculation',
+                formulaBtn: 'View Formula',
+                formulaContent: '<strong>Formula:</strong><br><code>Annual Div = Cash Flow × 40% ÷ 110M</code><br><code>5yr Div = Annual Div × 5</code><br><code>Fair Ratio = (INX Price + 5yr Div) ÷ NOTE Price</code><br><br><strong>Current Calculation:</strong><br>',
+                proposedLabel: 'Proposed',
+                proposedSub: 'Your Input',
+                fairLabel: 'Fair Value',
+                fairSub: 'Token + Dividend',
+                analyzing: 'Analyzing...',
+                disclaimerTitle: '⚠ Important Disclaimer',
+                disclaimerText: '• This analysis assumes INX Limited achieves the estimated cash flow.<br>• 40% profit distribution is at company discretion and not guaranteed.<br>• Token prices fluctuate with market conditions.<br>• This document is for informational purposes only, not investment advice.<br>• Please review SEC EDGAR filings before making investment decisions.',
+                verdictLoss: 'Swapping at proposed ratio: ~{0}% unfavorable',
+                verdictGain: 'Swapping at proposed ratio: ~{0}% favorable',
+                verdictFair: 'Proposed ≈ Fair ratio (diff: {0}%)'
+            }
+        };
+        
+        let currentLang = 'ko';
+        
+        function setLang(lang) {
+            currentLang = lang;
+            document.getElementById('langKo').classList.toggle('active', lang === 'ko');
+            document.getElementById('langEn').classList.toggle('active', lang === 'en');
+            document.documentElement.lang = lang;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key] && el.id !== 'calcDetail') {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+            
+            const btn = document.getElementById('formulaBtn');
+            const btnText = lang === 'ko' ? '계산식 보기' : 'View Formula';
+            btn.innerHTML = `<span>${btnText}</span>`;
+            
+            calculate();
+        }
+        
+        function setRatio(ratio) {
+            document.getElementById('proposedRatio').value = ratio;
+            document.querySelectorAll('#ratioBtns .quick-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            calculate();
+        }
+        
+        function setCashFlow(amount) {
+            document.getElementById('cashFlow').value = amount;
+            document.querySelectorAll('#cashFlowBtns .quick-btn, #cashFlowBtns2 .quick-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            calculate();
+        }
+        
+        function toggleFormula() {
+            const dropdown = document.getElementById('formulaDropdown');
+            const btn = document.getElementById('formulaBtn');
+            dropdown.classList.toggle('show');
+            btn.classList.toggle('active');
+        }
+        
+        function calculate() {
+            const proposedRatio = parseFloat(document.getElementById('proposedRatio').value) || 4;
+            const cashFlow = parseFloat(document.getElementById('cashFlow').value) || 0;
+            const circulatingSupply = 110000000;
+            const inxPrice = parseFloat(document.getElementById('inxPrice').value) || 0.16;
+            const notePrice = parseFloat(document.getElementById('notePrice').value) || 0.08;
+            
+            const distribution40 = cashFlow * 0.4;
+            const perTokenDist = distribution40 / circulatingSupply;
+            const dividendValue5yr = perTokenDist * 5;
+            const fairSwapRatio = notePrice > 0 ? (inxPrice + dividendValue5yr) / notePrice : 0;
+            
+            document.getElementById('proposedRatioResult').textContent = '1 : ' + proposedRatio.toFixed(2);
+            document.getElementById('fairRatioResult').textContent = '1 : ' + fairSwapRatio.toFixed(2);
+            
+            const calcDetailEl = document.getElementById('calcDetail');
+            if (currentLang === 'ko') {
+                calcDetailEl.innerHTML = `
+                    <code>연간: $${(cashFlow/1000000).toFixed(1)}M × 40% ÷ 110M = $${perTokenDist.toFixed(4)}/INX</code><br>
+                    <code>5년: $${perTokenDist.toFixed(4)} × 5 = $${dividendValue5yr.toFixed(4)}</code><br>
+                    <code>적정: ($${inxPrice.toFixed(2)} + $${dividendValue5yr.toFixed(4)}) ÷ $${notePrice.toFixed(2)} = 1:${fairSwapRatio.toFixed(2)}</code>
+                `;
+            } else {
+                calcDetailEl.innerHTML = `
+                    <code>Annual: $${(cashFlow/1000000).toFixed(1)}M × 40% ÷ 110M = $${perTokenDist.toFixed(4)}/INX</code><br>
+                    <code>5yr: $${perTokenDist.toFixed(4)} × 5 = $${dividendValue5yr.toFixed(4)}</code><br>
+                    <code>Fair: ($${inxPrice.toFixed(2)} + $${dividendValue5yr.toFixed(4)}) ÷ $${notePrice.toFixed(2)} = 1:${fairSwapRatio.toFixed(2)}</code>
+                `;
+            }
+            
+            const diffPercent = fairSwapRatio > 0 ? ((fairSwapRatio - proposedRatio) / fairSwapRatio) * 100 : 0;
+            
+            const verdictBox = document.getElementById('verdictBox');
+            const verdictText = document.getElementById('verdictText');
+            const t = i18n[currentLang];
+            
+            verdictBox.classList.remove('loss', 'profit', 'neutral');
+            
+            if (diffPercent > 5) {
+                verdictBox.classList.add('loss');
+                verdictText.innerHTML = t.verdictLoss.replace('{0}', Math.abs(diffPercent).toFixed(1));
+            } else if (diffPercent < -5) {
+                verdictBox.classList.add('profit');
+                verdictText.innerHTML = t.verdictGain.replace('{0}', Math.abs(diffPercent).toFixed(1));
+            } else {
+                verdictBox.classList.add('neutral');
+                verdictText.innerHTML = t.verdictFair.replace('{0}', Math.abs(diffPercent).toFixed(1));
+            }
+        }
+        
+        document.getElementById('proposedRatio').addEventListener('input', calculate);
+        document.getElementById('cashFlow').addEventListener('input', calculate);
+        document.getElementById('inxPrice').addEventListener('input', calculate);
+        document.getElementById('notePrice').addEventListener('input', calculate);
+        
+        calculate();
+    </script>
+</body>
+</html>
