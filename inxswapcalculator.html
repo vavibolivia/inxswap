@@ -132,6 +132,34 @@
             text-decoration: underline;
         }
         
+        .assumptions-box {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-blue);
+            padding: 16px 20px;
+            margin-bottom: 28px;
+        }
+        
+        .assumptions-title {
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+        }
+        
+        .assumptions-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        .assumptions-list li {
+            margin-bottom: 4px;
+        }
+        
         .doc-content {
             padding: 30px;
         }
@@ -501,6 +529,21 @@
             font-size: 0.7rem;
         }
         
+        .doc-footer-contact {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .doc-footer-contact a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        
+        .doc-footer-contact a:hover {
+            text-decoration: underline;
+        }
+        
         @media (max-width: 600px) {
             body { padding: 10px; }
             .doc-header { flex-direction: column; gap: 12px; text-align: center; }
@@ -539,6 +582,15 @@
         </div>
         
         <div class="doc-content">
+            <!-- Assumptions -->
+            <div class="assumptions-box">
+                <div class="assumptions-title" data-i18n="assumptionsTitle">📋 Key Assumptions</div>
+                <ul class="assumptions-list">
+                    <li data-i18n="assumption1">Current token prices are assumed to remain constant</li>
+                    <li data-i18n="assumption2">Fair ratio calculated based on INX 40% profit distribution rights vs NOTE price</li>
+                    <li data-i18n="assumption3">Republic NOTE dividends are excluded from this calculation</li>
+                </ul>
+            </div>
             <!-- Section 1 -->
             <div class="section">
                 <h2 class="section-title"><span class="section-number">§1</span> <span data-i18n="sec1Title">Proposed Swap Ratio</span></h2>
@@ -697,6 +749,9 @@
             <div class="doc-footer-legal">
                 CIK: 0001725882 | This document is for informational purposes only.
             </div>
+            <div class="doc-footer-contact" data-i18n="footerContact">
+                For corrections or inquiries: <a href="mailto:vavibolivia@gmail.com">vavibolivia@gmail.com</a>
+            </div>
         </footer>
     </div>
     
@@ -705,6 +760,10 @@
             ko: {
                 headerSub: 'SEC 등록 보안 토큰 | F-1 Prospectus 제출',
                 docRef: '문서 참조: INX-SWAP-2025',
+                assumptionsTitle: '📋 주요 전제',
+                assumption1: '토큰 가격은 현재 수준을 유지한다고 가정',
+                assumption2: 'INX 40% 이익 분배권을 NOTE 현재가 대비 비율로 산정',
+                assumption3: 'Republic NOTE의 배당은 본 계산에서 제외',
                 sec1Title: '제안 스왑 비율',
                 proposedRatioLabel: '제안 스왑 비율',
                 sec2Title: 'INX Limited 재무 파라미터',
@@ -724,6 +783,7 @@
                 fairSub: '토큰가치 + 분배금',
                 disclaimerTitle: '⚠ 중요 고지사항',
                 disclaimerText: '• 본 분석은 INX Limited가 예상 현금흐름을 달성한다는 가정 하에 수행되었습니다.<br>• 40% 이익 분배는 회사의 재량에 따르며, 보장되지 않습니다.<br>• 토큰 가격은 시장 상황에 따라 변동됩니다.<br>• 본 자료는 정보 제공 목적이며, 투자 권유가 아닙니다.<br>• 투자 결정 전 SEC EDGAR 공시 자료를 직접 확인하시기 바랍니다.',
+                footerContact: '수정 및 문의: <a href="mailto:vavibolivia@gmail.com">vavibolivia@gmail.com</a>',
                 verdictLoss: '제안 비율로 스왑 시 약 {0}% 불리',
                 verdictGain: '제안 비율로 스왑 시 약 {0}% 유리',
                 verdictFair: '제안 비율 ≈ 적정 비율 (차이 {0}%)'
@@ -731,6 +791,10 @@
             en: {
                 headerSub: 'SEC Registered Security Token | F-1 Prospectus Filed',
                 docRef: 'Document Reference: INX-SWAP-2025',
+                assumptionsTitle: '📋 Key Assumptions',
+                assumption1: 'Current token prices are assumed to remain constant',
+                assumption2: 'Fair ratio calculated based on INX 40% profit distribution rights vs NOTE price',
+                assumption3: 'Republic NOTE dividends are excluded from this calculation',
                 sec1Title: 'Proposed Swap Ratio',
                 proposedRatioLabel: 'Proposed Swap Ratio',
                 sec2Title: 'INX Limited Financial Parameters',
@@ -750,6 +814,7 @@
                 fairSub: 'Token + Dividend',
                 disclaimerTitle: '⚠ Important Disclaimer',
                 disclaimerText: '• This analysis assumes INX Limited achieves the estimated cash flow.<br>• 40% profit distribution is at company discretion and not guaranteed.<br>• Token prices fluctuate with market conditions.<br>• This document is for informational purposes only, not investment advice.<br>• Please review SEC EDGAR filings before making investment decisions.',
+                footerContact: 'For corrections or inquiries: <a href="mailto:vavibolivia@gmail.com">vavibolivia@gmail.com</a>',
                 verdictLoss: 'Swapping at proposed ratio: ~{0}% unfavorable',
                 verdictGain: 'Swapping at proposed ratio: ~{0}% favorable',
                 verdictFair: 'Proposed ≈ Fair ratio (diff: {0}%)'
